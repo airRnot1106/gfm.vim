@@ -7,9 +7,8 @@
       url = "github:Shougo/goda.vim/v0.7.2";
       flake = false;
     };
-    # TODO: use the published repository, with the replace directive of go.mod removed.
     gks = {
-      url = "git+file:///Users/airrnot/dev/github.com/airRnot1106/gks.vim";
+      url = "github:airRnot1106/gks.vim";
       flake = false;
     };
   };
@@ -36,13 +35,9 @@
           pname = "gfm";
           inherit version;
           src = ./.;
-          vendorHash = "sha256-R9ZhCxUkZ1hHI6Ujnv3w0rSpfMDcN1VguY/TLHKjqI8=";
+          vendorHash = "sha256-oXOdOJv6aGUVTHf29mrcqVrqw5FmS4xUC7OTNFB48pA=";
           subPackages = [ "." ];
           doCheck = false;
-          postPatch = ''
-            cp -r ${gks} ../gks.vim
-            chmod -R u+w ../gks.vim
-          '';
           postInstall = ''
             mv $out/bin/gfm.vim $out/bin/gfm
           '';

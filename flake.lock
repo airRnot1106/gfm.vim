@@ -5,15 +5,15 @@
       "locked": {
         "lastModified": 1794035140,
         "narHash": "sha256-EV7PBZWfoBCj4CM5jao8b0ZeOd+o1ibh2wdRrnoC+m4=",
-        "ref": "refs/heads/main",
+        "owner": "airRnot1106",
+        "repo": "gks.vim",
         "rev": "a6cd30969eda2ad48342d782d2ab385321afcd4e",
-        "revCount": 3,
-        "type": "git",
-        "url": "file:///Users/airrnot/dev/github.com/airRnot1106/gks.vim"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///Users/airrnot/dev/github.com/airRnot1106/gks.vim"
+        "owner": "airRnot1106",
+        "repo": "gks.vim",
+        "type": "github"
       }
     },
     "goda-vim": {
