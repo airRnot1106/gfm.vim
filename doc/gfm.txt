@@ -1,0 +1,111 @@
+*gfm.txt*	Jump to a fuzzy matched word on goda.vim
+
+==============================================================================
+INTRODUCTION						*gfm* *fuzzy-motion-vim*
+
+gfm.vim fuzzy searches the words of the window, labels the matches in the
+order of their score, and moves the cursor to the label you type. Type the
+search in lowercase and the label in uppercase. It is a port of
+fuzzy-motion.vim from denops.vim to goda.vim.
+
+With the matcher "kensaku", romaji finds Japanese words. It needs gks.vim.
+
+==============================================================================
+INSTALL							*gfm-install*
+
+gfm.vim needs goda.vim, gks.vim for the matcher "kensaku", Vim 9.1 with |+job|
+and |+channel| or Neovim 0.11, and either Nix or Go 1.26 to build the binary.
+Windows is not supported.
+
+With vim-plug:
+>
+	Plug 'Shougo/goda.vim'
+	Plug 'airRnot1106/gks.vim', { 'do': 'nix build' }
+	Plug 'airRnot1106/gfm.vim', { 'do': 'nix build' }
+<
+Without Nix, run this in the plugin directory. The binary lands at bin/gfm.
+>
+	go build -o bin/gfm .
+<
+The binary is looked up in this order: |g:gfm_binary|, bin/gfm and
+result/bin/gfm in the plugin directory.
+
+==============================================================================
+COMMANDS						*fuzzy-motion-commands*
+
+							*:FuzzyMotion*
+:FuzzyMotion
+	Search the words of the window and move the cursor to one of them.
+
+	Characters from space to "~" that are not labels extend the search.
+	<CR> jumps to the first target, <BS> and <C-h> delete a character,
+	<C-w> clears the search, and <Esc> quits.
+
+==============================================================================
+FUNCTIONS						*fuzzy-motion-functions*
+
+							*fuzzy_motion#targets()*
+fuzzy_motion#targets({query})
+	Return the labeled targets of {query} in the current window.
+
+==============================================================================
+VARIABLES						*fuzzy-motion-variables*
+
+							*g:gfm_binary*
+g:gfm_binary
+	Path of the binary. Unset by default.
+
+					*g:fuzzy_motion_word_regexp_list*
+g:fuzzy_motion_word_regexp_list
+	Regular expressions that make the list of words, in the syntax of Go's
+	regexp package. "\p{Script_Extensions=Latin}" and its negation also
+	work, and other Script_Extensions properties are read as the script.
+
+	Default: [
+		   '[0-9a-zA-Z_-]+',
+		   '([0-9a-zA-Z_-]|[.])+',
+		   '([0-9a-zA-Z_-]|[().#])+',
+		   '\P{Script_Extensions=Latin}+',
+		 ]
+
+							*g:fuzzy_motion_labels*
+g:fuzzy_motion_labels
+	The labels, in the order they are given out.
+
+	Default: the uppercase letters from the home row upward
+
+				*g:fuzzy_motion_word_filter_regexp_list*
+g:fuzzy_motion_word_filter_regexp_list
+	Only the words that match all these regular expressions are candidates.
+
+	Default: []
+
+						*g:fuzzy_motion_auto_jump*
+g:fuzzy_motion_auto_jump
+	When true, jump as soon as one target is left.
+
+	Default: v:false
+
+				*g:fuzzy_motion_disable_match_highlight*
+g:fuzzy_motion_disable_match_highlight
+	When true, matches are not highlighted.
+
+	Default: v:false
+
+						*g:fuzzy_motion_matchers*
+g:fuzzy_motion_matchers
+	The matchers: "fzf", and "kensaku" for two or more characters of romaji.
+	Results of "fzf" come first.
+
+	Default: ['fzf']
+
+==============================================================================
+HIGHLIGHT						*fuzzy-motion-highlight*
+
+*FuzzyMotionShade*	The window while the search runs.
+*FuzzyMotionChar*	The first label. <CR> jumps there.
+*FuzzyMotionSubChar*	The other labels.
+*FuzzyMotionMatch*	The matched text.
+
+==============================================================================
+vim:tw=78:ts=8:noet:ft=help:norl:
