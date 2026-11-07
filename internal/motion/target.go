@@ -169,15 +169,23 @@ func label(results []result, labels []string, previous []Target) []Target {
 	return targets
 }
 
-// targets runs the matchers on the words of r. m is nil when kensaku is not
+// Answer is the outcome of an input. Narrowed is the target of an input that
+// left no other target among those labeled before it, which is what
+// g:fuzzy_motion_auto_jump jumps to.
+type Answer struct {
+	Targets  []Target `json:"targets"`
+	Narrowed *Target  `json:"narrowed"`
+}
+
+// answer runs the matchers on the words of r. m is nil when kensaku is not
 // among them. fzf results come first, and a position keeps its first result.
-func targets(r Request, m *migemo.Migemo) ([]Target, error) {
+func answer(r Request, m *migemo.Migemo) (Answer, error) {
 	if r.Input == "" {
-		return []Target{}, nil
+		return Answer{Targets: []Target{}}, nil
 	}
 	candidates, err := words(r)
 	if err != nil {
-		return nil, err
+		return Answer{}, err
 	}
 	var results []result
 	if slices.Contains(r.Matchers, "fzf") {
@@ -186,7 +194,7 @@ func targets(r Request, m *migemo.Migemo) ([]Target, error) {
 	if m != nil && len(utf16.Encode([]rune(r.Input))) >= 2 {
 		found, err := kensakuResults(m, candidates, r.Input)
 		if err != nil {
-			return nil, err
+			return Answer{}, err
 		}
 		results = append(results, found...)
 	}
@@ -199,5 +207,12 @@ func targets(r Request, m *migemo.Migemo) ([]Target, error) {
 			unique = append(unique, c)
 		}
 	}
-	return label(unique, r.Labels, r.Previous), nil
+	// The first pass keeps the labels of the targets that stay. The second gives
+	// the labels of the targets that left to the new ones.
+	kept := label(unique, r.Labels, r.Previous)
+	a := Answer{Targets: label(unique, r.Labels, kept)}
+	if len(kept) == 1 {
+		a.Narrowed = &kept[0]
+	}
+	return a, nil
 }

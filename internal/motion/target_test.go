@@ -202,3 +202,43 @@ func TestScriptExtensionsLatin(t *testing.T) {
 		t.Errorf("got %q", got)
 	}
 }
+
+func targets(r Request, m *migemo.Migemo) ([]Target, error) {
+	a, err := answer(r, m)
+	return a.Targets, err
+}
+
+func TestLabelsOfGoneTargetsGoToNewOnes(t *testing.T) {
+	r := Request{
+		Lines:    []string{"ab", "ac", "日本"},
+		First:    1,
+		Regexps:  defaultRegexps,
+		Labels:   []string{"A", "S", "D"},
+		Matchers: []string{"fzf", "kensaku"},
+	}
+	m := dictionary(t)
+	r.Input = "a"
+	first, err := answer(r, m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(first.Targets) != 2 {
+		t.Fatalf("%+v", first)
+	}
+	r.Input, r.Previous = "ni", first.Targets
+	second, err := answer(r, m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(second.Targets) != 1 || second.Targets[0].Char != "D" {
+		t.Errorf("%+v", second)
+	}
+	r.Input, r.Labels = "ab", []string{"A", "S"}
+	third, err := answer(r, m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if third.Narrowed == nil || third.Narrowed.Text != "ab" {
+		t.Errorf("%+v", third)
+	}
+}

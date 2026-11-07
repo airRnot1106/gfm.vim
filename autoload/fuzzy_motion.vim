@@ -54,7 +54,7 @@ endfunction
 function! fuzzy_motion#targets(q) abort
   call s:prepare()
   let first = line('w0')
-  return s:request(a:q, [], first, getline(first, line('w$')))
+  return s:request(a:q, [], first, getline(first, line('w$'))).targets
 endfunction
 
 function! fuzzy_motion#_getchar() abort
@@ -165,15 +165,16 @@ function! s:loop(first, lines) abort
       endif
     elseif code == s:BS || code == s:C_H
       let input = input[: -2]
-      let targets = s:request(input, [], a:first, a:lines)
+      let targets = s:request(input, [], a:first, a:lines).targets
     elseif code == s:C_W
       let input = ''
       let targets = []
     elseif s:SPACE <= code && code <= s:TILDE
       let input .= nr2char(code)
-      let targets = s:request(input, targets, a:first, a:lines)
-      if g:fuzzy_motion_auto_jump && len(targets) == 1
-        call s:jump(targets[0])
+      let answer = s:request(input, targets, a:first, a:lines)
+      let targets = answer.targets
+      if g:fuzzy_motion_auto_jump && answer.narrowed isnot v:null
+        call s:jump(answer.narrowed)
         return
       endif
     endif

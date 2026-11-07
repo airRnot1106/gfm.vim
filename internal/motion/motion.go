@@ -62,7 +62,7 @@ func (p *Motion) targets(_ context.Context, _ sdk.Host, params []any) (any, erro
 			return nil, err
 		}
 	}
-	found, err := targets(r, m)
+	found, err := answer(r, m)
 	if err != nil {
 		return nil, err
 	}
