@@ -78,7 +78,8 @@ The highlight groups are `FuzzyMotionShade`, `FuzzyMotionChar`, `FuzzyMotionSubC
 
 - The regular expression options use the syntax of Go's `regexp` package instead of JavaScript's. Look-around and backreferences are not available. `\p{Script_Extensions=Latin}` works, and other `Script_Extensions` properties are read as the plain script.
 - The offsets of `fzf` results are bytes, so a label lands on the matched character in a word with multibyte text before it.
-- A search of only inverse terms, such as `!foo`, labels the start of each word.
+- A search with no position, such as `^` or `!foo`, labels the start of each word, and `'` in the search works. fuzzy-motion.vim stops with an error on `^` at the start of a line and on `'`.
+- The shade covers the lines of the window. fuzzy-motion.vim also adds a match for each line up to the sum of the first and last line numbers, which delays the labels in the middle of a long buffer.
 - Decomposed Unicode text is not normalized before `fzf` matches it.
 - `fuzzy_motion#request()` is gone. `fuzzy_motion#targets()` stays.
 
