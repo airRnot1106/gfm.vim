@@ -93,19 +93,40 @@
         pkgs:
         let
           built = mkPackages pkgs;
+          dictionary = pkgs.fetchurl {
+            url = "https://github.com/oguna/migemo-compact-dict-latest/releases/download/v0.2/migemo-compact-dict";
+            hash = "sha256-+jrCQLM1iSIvzUCRDe0sFpc3TgGvFNwrtd32g6oumho=";
+          };
+          goTest =
+            name: command:
+            built.gfm.overrideAttrs {
+              pname = "gfm-${name}";
+              doCheck = true;
+              checkPhase = ''
+                runHook preCheck
+                export GKS_TEST_DICT=${dictionary}
+                ${command}
+                runHook postCheck
+              '';
+              installPhase = "touch $out";
+              postInstall = "";
+            };
         in
         {
-          unit = built.gfm.overrideAttrs {
-            pname = "gfm-unit";
-            doCheck = true;
-            checkPhase = ''
-              runHook preCheck
-              go test ./internal/...
-              runHook postCheck
-            '';
-            installPhase = "touch $out";
-            postInstall = "";
-          };
+          unit = goTest "unit" "go test ./internal/...";
+          e2e = goTest "e2e" ''
+            export HOME=$TMPDIR
+            export PATH=${
+              pkgs.lib.makeBinPath [
+                pkgs.vim
+                pkgs.neovim
+              ]
+            }:$PATH
+            export GFM_E2E_GODA=${goda-vim}
+            export GFM_E2E_GKS=${gks}
+            export GFM_E2E_STRICT=1
+            go test -v -count=1 ./e2e
+          '';
         }
       );
 
