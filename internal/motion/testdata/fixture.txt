@@ -1,0 +1,17 @@
+# fuzzy motion fixture
+日本語のテキストを検索する
+東京都の天気は晴れです。
+kensaku-search.vim replaces the search pattern
+func main() { fmt.Println("hello, world") }
+foo_bar baz.qux some-word camelCaseWord
+これは「日本語」の文章で、漢字とカタカナとひらがなが混ざる。
+ﾊﾝｶｸｶﾀｶﾅ と ｚｅｎｋａｋｕ の混在 abc日本def
+	indented with a tab and 日本語
+  two spaces then ニホンゴ then english
+100 200 300 v1.2.3 #tag (paren) a.b.c
+café naïve résumé Ångström
+学校に行く がっこう ガッコウ gakkou
+item1 item2 item3 ITEM4 Item5
+url http://example.com/path?query=1
+漢字 かな 英語 mixed-日本語-text
+the quick brown fox jumps over the lazy dog
