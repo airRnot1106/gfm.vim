@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/airRnot1106/gks.vim/migemo"
+	"github.com/airRnot1106/goda-ks.vim/migemo"
 )
 
 var (
@@ -25,11 +25,11 @@ func fixture(t *testing.T) []string {
 	return strings.Split(strings.TrimSuffix(string(data), "\n"), "\n")
 }
 
-// The dictionary is GPL, so it is not in this repository. GKS_TEST_DICT
+// The dictionary is GPL, so it is not in this repository. GODA_KS_TEST_DICT
 // names it; nix flake check sets it.
 func dictionary(t *testing.T) *migemo.Migemo {
 	t.Helper()
-	path := os.Getenv("GKS_TEST_DICT")
+	path := os.Getenv("GODA_KS_TEST_DICT")
 	if path == "" {
 		home, _ := os.UserHomeDir()
 		path = filepath.Join(home, ".cache/kensaku.vim/migemo-compact-dict")

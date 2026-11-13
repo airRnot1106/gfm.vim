@@ -6,9 +6,9 @@ import (
 	"unicode/utf16"
 	"unicode/utf8"
 
-	"github.com/airRnot1106/gks.vim/migemo"
+	"github.com/airRnot1106/goda-ks.vim/migemo"
 
-	"github.com/airRnot1106/gfm.vim/internal/fzf"
+	"github.com/airRnot1106/goda-fm.vim/internal/fzf"
 )
 
 const kensakuScore = 1

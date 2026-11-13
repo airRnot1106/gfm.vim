@@ -1,20 +1,20 @@
-# gfm.vim
+# goda-fm.vim
 
 Jump to any word in the window by typing a few letters of it, in Vim and Neovim.
 
-gfm.vim is a port of [fuzzy-motion.vim](https://github.com/yuki-yano/fuzzy-motion.vim) from [denops.vim](https://github.com/vim-denops/denops.vim) to [goda.vim](https://github.com/Shougo/goda.vim). It keeps `:FuzzyMotion`, the labels, the highlights and the `g:fuzzy_motion_*` options, and needs no Deno.
+goda-fm.vim is a port of [fuzzy-motion.vim](https://github.com/yuki-yano/fuzzy-motion.vim) from [denops.vim](https://github.com/vim-denops/denops.vim) to [goda.vim](https://github.com/Shougo/goda.vim). It keeps `:FuzzyMotion`, the labels, the highlights and the `g:fuzzy_motion_*` options, and needs no Deno.
 
 ## Features
 
 - Works in Vim and Neovim
 - The `fzf` matcher is a port of [fzf-for-js](https://github.com/ajitid/fzf-for-js), the extended syntax included
-- The `kensaku` matcher finds Japanese words from romaji with the Go package of [gks.vim](https://github.com/airRnot1106/gks.vim), linked into the binary
+- The `kensaku` matcher finds Japanese words from romaji with the Go package of [goda-ks.vim](https://github.com/airRnot1106/goda-ks.vim), linked into the binary
 
 ## Requirements
 
 - Vim 9.1 with `+job` and `+channel`, or Neovim 0.11
 - [goda.vim](https://github.com/Shougo/goda.vim)
-- [gks.vim](https://github.com/airRnot1106/gks.vim), for the `kensaku` matcher
+- [goda-ks.vim](https://github.com/airRnot1106/goda-ks.vim), for the `kensaku` matcher
 - [Nix](https://nixos.org) with flakes enabled, or [Go](https://go.dev) 1.26, to build the binary
 
 Windows is not supported.
@@ -23,14 +23,14 @@ Windows is not supported.
 
 ### Using a plugin manager
 
-Install goda.vim, gks.vim and gfm.vim, then run `nix build` inside the plugin directories. The plugin expects the binary at `result/bin/gfm`.
+Install goda.vim, goda-ks.vim and goda-fm.vim, then run `nix build` inside the plugin directories. The plugin expects the binary at `result/bin/goda-fm`.
 
 With [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
 {
-  'airRnot1106/gfm.vim',
-  dependencies = { 'Shougo/goda.vim', 'airRnot1106/gks.vim' },
+  'airRnot1106/goda-fm.vim',
+  dependencies = { 'Shougo/goda.vim', 'airRnot1106/goda-ks.vim' },
   build = 'nix build',
   cmd = 'FuzzyMotion',
   init = function()
@@ -44,10 +44,10 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
 Build the binary with Go instead. Run this inside the plugin directory:
 
 ```sh
-go build -o bin/gfm .
+go build -o bin/goda-fm .
 ```
 
-The plugin finds the binary at `bin/gfm`.
+The plugin finds the binary at `bin/goda-fm`.
 
 ## Usage
 
@@ -58,13 +58,13 @@ nnoremap <Leader>; <Cmd>FuzzyMotion<CR>
 xnoremap <Leader>; <Cmd>FuzzyMotion<CR>
 ```
 
-See `:help gfm`.
+See `:help goda-fm`.
 
 ## Options
 
 | Variable | Default | Description |
 | --- | --- | --- |
-| `g:gfm_binary` | Unset | Path to the binary. Overrides `bin/gfm` and `result/bin/gfm`. |
+| `g:goda_fm#binary` | Unset | Path to the binary. Overrides `bin/goda-fm` and `result/bin/goda-fm`. |
 | `g:fuzzy_motion_labels` | `A` to `Z`, home row first | The labels. |
 | `g:fuzzy_motion_matchers` | `['fzf']` | `fzf` and `kensaku`. |
 | `g:fuzzy_motion_word_regexp_list` | See `:help` | Regular expressions that make the words. |
@@ -72,7 +72,7 @@ See `:help gfm`.
 | `g:fuzzy_motion_auto_jump` | `v:false` | Jump when one target is left. |
 | `g:fuzzy_motion_disable_match_highlight` | `v:false` | Do not highlight matches. |
 
-The highlight groups are `FuzzyMotionShade`, `FuzzyMotionChar`, `FuzzyMotionSubChar` and `FuzzyMotionMatch`. If something fails, check `goda#log('gfm')`.
+The highlight groups are `FuzzyMotionShade`, `FuzzyMotionChar`, `FuzzyMotionSubChar` and `FuzzyMotionMatch`. If something fails, check `goda#log('fm')`.
 
 ## Differences from fuzzy-motion.vim
 
@@ -91,7 +91,7 @@ go test ./...
 nix flake check
 ```
 
-`internal/motion/testdata/targets.json` is what `fuzzy_motion#targets()` of fuzzy-motion.vim returned for 80 queries on `fixture.txt`, and `internal/fzf/testdata/golden.ts` writes the results of fzf 0.5.2. The kensaku cases read the dictionary from `$GKS_TEST_DICT` or `~/.cache/kensaku.vim/migemo-compact-dict`, and skip without it.
+`internal/motion/testdata/targets.json` is what `fuzzy_motion#targets()` of fuzzy-motion.vim returned for 80 queries on `fixture.txt`, and `internal/fzf/testdata/golden.ts` writes the results of fzf 0.5.2. The kensaku cases read the dictionary from `$GODA_KS_TEST_DICT` or `~/.cache/kensaku.vim/migemo-compact-dict`, and skip without it.
 
 ## Special thanks
 

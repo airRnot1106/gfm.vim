@@ -37,7 +37,7 @@ func moduleDir(t *testing.T, root, env, module string) string {
 
 func dictionary(t *testing.T) string {
 	t.Helper()
-	path := os.Getenv("GKS_TEST_DICT")
+	path := os.Getenv("GODA_KS_TEST_DICT")
 	if path == "" {
 		home, _ := os.UserHomeDir()
 		path = filepath.Join(home, ".cache/kensaku.vim/migemo-compact-dict")
@@ -53,7 +53,7 @@ func TestEditors(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	binary := filepath.Join(t.TempDir(), "gfm")
+	binary := filepath.Join(t.TempDir(), "goda-fm")
 	build := exec.Command("go", "build", "-o", binary, ".")
 	build.Dir = root
 	if out, err := build.CombinedOutput(); err != nil {
@@ -62,7 +62,7 @@ func TestEditors(t *testing.T) {
 	for _, editor := range editors {
 		t.Run(editor.name, func(t *testing.T) {
 			if _, err := exec.LookPath(editor.command[0]); err != nil {
-				if os.Getenv("GFM_E2E_STRICT") != "" {
+				if os.Getenv("GODA_FM_E2E_STRICT") != "" {
 					t.Fatal(err)
 				}
 				t.Skip(err)
@@ -73,12 +73,12 @@ func TestEditors(t *testing.T) {
 			cmd := exec.CommandContext(ctx, editor.command[0], append(editor.command[1:], "e2e/testdata/driver.vim")...)
 			cmd.Dir = root
 			cmd.Env = append(os.Environ(),
-				"GFM_E2E_PLUGIN="+root,
-				"GFM_E2E_GODA="+moduleDir(t, root, "GFM_E2E_GODA", "github.com/Shougo/goda.vim"),
-				"GFM_E2E_GKS="+moduleDir(t, root, "GFM_E2E_GKS", "github.com/airRnot1106/gks.vim"),
-				"GFM_E2E_BINARY="+binary,
-				"GFM_E2E_DICT="+dictionary(t),
-				"GFM_E2E_OUT="+out,
+				"GODA_FM_E2E_PLUGIN="+root,
+				"GODA_FM_E2E_GODA="+moduleDir(t, root, "GODA_FM_E2E_GODA", "github.com/Shougo/goda.vim"),
+				"GODA_FM_E2E_GODA_KS="+moduleDir(t, root, "GODA_FM_E2E_GODA_KS", "github.com/airRnot1106/goda-ks.vim"),
+				"GODA_FM_E2E_BINARY="+binary,
+				"GODA_FM_E2E_DICT="+dictionary(t),
+				"GODA_FM_E2E_OUT="+out,
 			)
 			if output, err := cmd.CombinedOutput(); err != nil {
 				t.Fatalf("%v\n%s", err, output)

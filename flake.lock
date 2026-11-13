@@ -1,18 +1,18 @@
 {
   "nodes": {
-    "gks": {
+    "goda-ks": {
       "flake": false,
       "locked": {
-        "lastModified": 1794035140,
-        "narHash": "sha256-EV7PBZWfoBCj4CM5jao8b0ZeOd+o1ibh2wdRrnoC+m4=",
+        "lastModified": 1794578564,
+        "narHash": "sha256-lJimug67nZrsF7Vw6y8Kqw6pruYUUvwMDpXYZ9rJ1BA=",
         "owner": "airRnot1106",
-        "repo": "gks.vim",
-        "rev": "a6cd30969eda2ad48342d782d2ab385321afcd4e",
+        "repo": "goda-ks.vim",
+        "rev": "177465c4c1b3db12121dd47f9812dc90f27038ab",
         "type": "github"
       },
       "original": {
         "owner": "airRnot1106",
-        "repo": "gks.vim",
+        "repo": "goda-ks.vim",
         "type": "github"
       }
     },
@@ -51,7 +51,7 @@
     },
     "root": {
       "inputs": {
-        "gks": "gks",
+        "goda-ks": "goda-ks",
         "goda-vim": "goda-vim",
         "nixpkgs": "nixpkgs"
       }

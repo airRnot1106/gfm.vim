@@ -1,4 +1,4 @@
-// Package motion is the gfm plugin. It finds and labels the targets of
+// Package motion is the goda-fm plugin. It finds and labels the targets of
 // an input for autoload/fuzzy_motion.vim.
 package motion
 
@@ -8,7 +8,7 @@ import (
 
 	"github.com/Shougo/goda.vim/sdk"
 
-	"github.com/airRnot1106/gks.vim/migemo"
+	"github.com/airRnot1106/goda-ks.vim/migemo"
 )
 
 // scriptVersion matches the version autoload/fuzzy_motion.vim passes to
@@ -26,7 +26,7 @@ func New() *Motion {
 }
 
 // Name implements sdk.Plugin.
-func (*Motion) Name() string { return "gfm" }
+func (*Motion) Name() string { return "fm" }
 
 // ScriptVersion implements sdk.ScriptVersioner.
 func (*Motion) ScriptVersion() int { return scriptVersion }

@@ -15,31 +15,31 @@ let s:SPACE = 32
 let s:TILDE = 126
 
 function! s:start() abort
-  let bins = exists('g:gfm_binary') ? [g:gfm_binary] : []
-  let bins += [s:root . '/bin/gfm', s:root . '/result/bin/gfm']
+  let bins = exists('g:goda_fm#binary') ? [g:goda_fm#binary] : []
+  let bins += [s:root . '/bin/goda-fm', s:root . '/result/bin/goda-fm']
   for bin in bins
     if executable(bin)
       call goda#start(bin)
       return
     endif
   endfor
-  throw 'gfm: no binary found, run nix build in ' . s:root . ' or see :help gfm-install'
+  throw 'goda-fm: no binary found, run nix build in ' . s:root . ' or see :help goda-fm-install'
 endfunction
 
 " Starts the binary, and with it the load of the dictionary while the user types.
 " goda keeps a failed start until the next goda#register(), and a later jump has
 " to see a binary built in the meantime.
 function! s:prepare() abort
-  if !goda#is_running('gfm')
-    call goda#register('gfm', function('s:start'),
-          \ #{version: 1, module: 'github.com/airRnot1106/gfm.vim'})
+  if !goda#is_running('fm')
+    call goda#register('fm', function('s:start'),
+          \ #{version: 1, module: 'github.com/airRnot1106/goda-fm.vim'})
   endif
   let config = index(g:fuzzy_motion_matchers, 'kensaku') >= 0 ? kensaku#config() : {}
-  call goda#notify('gfm', 'configure', config)
+  call goda#notify('fm', 'configure', config)
 endfunction
 
 function! s:request(input, previous, first, lines) abort
-  return goda#request('gfm', 'targets', #{
+  return goda#request('fm', 'targets', #{
         \ input: a:input,
         \ previous: a:previous,
         \ first: a:first,

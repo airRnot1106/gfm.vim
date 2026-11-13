@@ -1,34 +1,35 @@
-*gfm.txt*	Jump to a fuzzy matched word on goda.vim
+*goda_fm.txt*	Jump to a fuzzy matched word on goda.vim
 
 ==============================================================================
-INTRODUCTION						*gfm* *fuzzy-motion-vim*
+INTRODUCTION					  *goda-fm* *fuzzy-motion-vim*
 
-gfm.vim fuzzy searches the words of the window, labels the matches in the
+goda-fm.vim fuzzy searches the words of the window, labels the matches in the
 order of their score, and moves the cursor to the label you type. Type the
 search in lowercase and the label in uppercase. It is a port of
 fuzzy-motion.vim from denops.vim to goda.vim.
 
-With the matcher "kensaku", romaji finds Japanese words. It needs gks.vim.
+With the matcher "kensaku", romaji finds Japanese words. It needs goda-ks.vim.
 
 ==============================================================================
-INSTALL							*gfm-install*
+INSTALL							*goda-fm-install*
 
-gfm.vim needs goda.vim, gks.vim for the matcher "kensaku", Vim 9.1 with |+job|
-and |+channel| or Neovim 0.11, and either Nix or Go 1.26 to build the binary.
-Windows is not supported.
+goda-fm.vim needs goda.vim, goda-ks.vim for the matcher "kensaku", Vim 9.1
+with |+job| and |+channel| or Neovim 0.11, and either Nix or Go 1.26 to build
+the binary. Windows is not supported.
 
 With vim-plug:
 >
 	Plug 'Shougo/goda.vim'
-	Plug 'airRnot1106/gks.vim', { 'do': 'nix build' }
-	Plug 'airRnot1106/gfm.vim', { 'do': 'nix build' }
+	Plug 'airRnot1106/goda-ks.vim', { 'do': 'nix build' }
+	Plug 'airRnot1106/goda-fm.vim', { 'do': 'nix build' }
 <
-Without Nix, run this in the plugin directory. The binary lands at bin/gfm.
+Without Nix, run this in the plugin directory. The binary lands at
+bin/goda-fm.
 >
-	go build -o bin/gfm .
+	go build -o bin/goda-fm .
 <
-The binary is looked up in this order: |g:gfm_binary|, bin/gfm and
-result/bin/gfm in the plugin directory.
+The binary is looked up in this order: |g:goda_fm#binary|, bin/goda-fm and
+result/bin/goda-fm in the plugin directory.
 
 ==============================================================================
 COMMANDS						*fuzzy-motion-commands*
@@ -51,8 +52,8 @@ fuzzy_motion#targets({query})
 ==============================================================================
 VARIABLES						*fuzzy-motion-variables*
 
-							*g:gfm_binary*
-g:gfm_binary
+							*g:goda_fm#binary*
+g:goda_fm#binary
 	Path of the binary. Unset by default.
 
 					*g:fuzzy_motion_word_regexp_list*

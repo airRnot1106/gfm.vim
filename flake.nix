@@ -7,8 +7,8 @@
       url = "github:Shougo/goda.vim/v0.7.2";
       flake = false;
     };
-    gks = {
-      url = "github:airRnot1106/gks.vim";
+    goda-ks = {
+      url = "github:airRnot1106/goda-ks.vim";
       flake = false;
     };
   };
@@ -18,7 +18,7 @@
       self,
       nixpkgs,
       goda-vim,
-      gks,
+      goda-ks,
     }:
     let
       systems = [
@@ -31,17 +31,17 @@
       version = "0.1.0";
 
       mkPackages = pkgs: rec {
-        gfm = pkgs.buildGo126Module {
-          pname = "gfm";
+        goda-fm = pkgs.buildGo126Module {
+          pname = "goda-fm";
           inherit version;
           src = ./.;
-          vendorHash = "sha256-oXOdOJv6aGUVTHf29mrcqVrqw5FmS4xUC7OTNFB48pA=";
+          vendorHash = "sha256-ml58gta+1OsSX5EO+I5DWbPRGk3Z2uJnbAvD8ZThea0=";
           subPackages = [ "." ];
           doCheck = false;
           postInstall = ''
-            mv $out/bin/gfm.vim $out/bin/gfm
+            mv $out/bin/goda-fm.vim $out/bin/goda-fm
           '';
-          meta.mainProgram = "gfm";
+          meta.mainProgram = "goda-fm";
         };
 
         goda-vim-plugin = pkgs.vimUtils.buildVimPlugin {
@@ -51,7 +51,7 @@
         };
 
         vim-plugin = pkgs.vimUtils.buildVimPlugin {
-          pname = "gfm.vim";
+          pname = "goda-fm.vim";
           inherit version;
           src = pkgs.lib.fileset.toSource {
             root = ./.;
@@ -65,7 +65,7 @@
           dependencies = [ goda-vim-plugin ];
           preInstall = ''
             mkdir bin
-            cp ${gfm}/bin/gfm bin/gfm
+            cp ${goda-fm}/bin/goda-fm bin/goda-fm
           '';
         };
 
@@ -79,7 +79,7 @@
           built = mkPackages pkgs;
         in
         {
-          inherit (built) gfm vim-plugin default;
+          inherit (built) goda-fm vim-plugin default;
           goda-vim = built.goda-vim-plugin;
         }
       );
@@ -94,12 +94,12 @@
           };
           goTest =
             name: command:
-            built.gfm.overrideAttrs {
-              pname = "gfm-${name}";
+            built.goda-fm.overrideAttrs {
+              pname = "goda-fm-${name}";
               doCheck = true;
               checkPhase = ''
                 runHook preCheck
-                export GKS_TEST_DICT=${dictionary}
+                export GODA_KS_TEST_DICT=${dictionary}
                 ${command}
                 runHook postCheck
               '';
@@ -117,9 +117,9 @@
                 pkgs.neovim
               ]
             }:$PATH
-            export GFM_E2E_GODA=${goda-vim}
-            export GFM_E2E_GKS=${gks}
-            export GFM_E2E_STRICT=1
+            export GODA_FM_E2E_GODA=${goda-vim}
+            export GODA_FM_E2E_GODA_KS=${goda-ks}
+            export GODA_FM_E2E_STRICT=1
             go test -v -count=1 ./e2e
           '';
         }

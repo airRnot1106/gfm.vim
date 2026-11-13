@@ -1,8 +1,8 @@
-" Runs :FuzzyMotion in a real editor and writes what it saw to $GFM_E2E_OUT.
+" Runs :FuzzyMotion in a real editor and writes what it saw to $GODA_FM_E2E_OUT.
 set encoding=utf-8
-let &runtimepath = join(map([$GFM_E2E_PLUGIN, $GFM_E2E_GODA, $GFM_E2E_GKS], {_, dir -> escape(dir, ',')}) + [&runtimepath], ',')
-let g:gfm_binary = $GFM_E2E_BINARY
-let g:kensaku_dictionary_cache = $GFM_E2E_DICT
+let &runtimepath = join(map([$GODA_FM_E2E_PLUGIN, $GODA_FM_E2E_GODA, $GODA_FM_E2E_GODA_KS], {_, dir -> escape(dir, ',')}) + [&runtimepath], ',')
+let g:goda_fm#binary = $GODA_FM_E2E_BINARY
+let g:kensaku_dictionary_cache = $GODA_FM_E2E_DICT
 let g:fuzzy_motion_matchers = ['kensaku', 'fzf']
 runtime plugin/kensaku.vim
 runtime plugin/fuzzy_motion.vim
@@ -33,5 +33,5 @@ catch
   let s:result.error = v:exception
 endtry
 
-call writefile([json_encode(s:result)], $GFM_E2E_OUT)
+call writefile([json_encode(s:result)], $GODA_FM_E2E_OUT)
 qall!
